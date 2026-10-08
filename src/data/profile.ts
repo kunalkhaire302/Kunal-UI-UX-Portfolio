@@ -1,10 +1,3 @@
-ResourceUnavailable: C:\Users\asus\Documents\PowerShell\profile.ps1:5
-Line |
-   5 |      (& "D:\Anaconda3\Scripts\conda.exe" "shell.powershell" "hook") |  .
-     |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Program 'conda.exe' failed to run: StandardOutputEncoding is only supported when standard output is
-     | redirected.At C:\Users\asus\Documents\PowerShell\profile.ps1:5 char:6 +     (& "D:\Anaconda3\Scripts\conda.exe"
-     | "shell.powershell" "hook") |  . +      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
 export const profile = {
  name: 'Kunal Khaire', github: 'https://github.com/kunalkhaire302', linkedin: 'https://www.linkedin.com/in/kunal-khaire/', website: 'https://www.kunaluniverse.tech/',
  email: '', resume: '',
