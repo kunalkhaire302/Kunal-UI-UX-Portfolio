@@ -275,7 +275,7 @@ function VideoClip({ video, index, selected, onSelect }: { video: typeof videos[
   const playPreview = () => media.current?.play().catch(() => undefined);
   const pausePreview = () => media.current?.pause();
   return <article className={selected ? 'is-selected' : ''} tabIndex={0} onClick={onSelect} onFocus={() => { onSelect(); playPreview(); }} onBlur={pausePreview} onPointerEnter={playPreview} onPointerLeave={pausePreview}>
-    {video.src ? <video ref={media} src={video.src} poster={video.poster} muted loop playsInline preload="none" controls><track kind="captions" src="/videos/placeholder.vtt" srcLang="en" label="English" default /></video> : <img src={video.poster} alt="Placeholder poster awaiting a project video" loading="lazy" />}
+    {video.src ? <video ref={media} src={video.src} poster={video.poster} muted loop playsInline preload="metadata" controls aria-label={`${video.title} project video`}>{video.captions && <track kind="captions" src={video.captions} srcLang="en" label="English" default />}</video> : <img src={video.poster} alt="Placeholder poster awaiting a project video" loading="lazy" />}
     <div><span>CLIP {String(index + 1).padStart(2, '0')} · {video.duration}</span><h3>{video.title}</h3><p>{video.caption}</p></div>
   </article>;
 }
@@ -291,7 +291,7 @@ function CreateStudio() {
       <div className="cr-clip-grid">{videos.map((video, index) => <VideoClip key={video.title} video={video} index={index} selected={active === index} onSelect={() => select(index)} />)}</div>
       <div className="cr-timeline"><div className="cr-time-head"><span>00:00:00</span><strong>EDIT TIMELINE / DRAG OR USE ARROW KEYS</strong><output>{String(Math.round(playhead)).padStart(2, '0')}%</output></div><div className="cr-track" aria-hidden="true">{videos.map((video, index) => <span key={video.title} className={active === index ? 'is-active' : ''}>C{index + 1}</span>)}<i style={{ left: `${playhead}%` }} /></div><label><span className="sr-only">Timeline playhead position</span><input type="range" min="0" max="100" value={playhead} onChange={(event) => setPlayhead(Number(event.target.value))} /></label></div>
     </div>
-    <p className="cr-placeholder-note">VIDEO REQUIREMENT / Supply compressed MP4 or WebM files plus accurate VTT captions before publishing real work.</p>
+    <p className="cr-placeholder-note">VIDEO ACCESSIBILITY / Project videos are now included. Add accurate VTT caption tracks in <code>src/data/studio.ts</code> when transcripts are available.</p>
   </section>;
 }
 

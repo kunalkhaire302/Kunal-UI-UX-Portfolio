@@ -18,9 +18,9 @@ export const photos: PhotoItem[] = [
 ];
 
 export const videos = [
-  { title: 'Add project film 01', duration: '00:00', poster: '/videos/poster-01.svg', src: '', caption: 'Placeholder — add a captioned MP4 or WebM.' },
-  { title: 'Add project film 02', duration: '00:00', poster: '/videos/poster-02.svg', src: '', caption: 'Placeholder — add a captioned MP4 or WebM.' },
-  { title: 'Add project film 03', duration: '00:00', poster: '/videos/poster-03.svg', src: '', caption: 'Placeholder — add a captioned MP4 or WebM.' },
+  { title: 'CapstoneX', duration: '01:12', poster: '/videos/capstonex-poster.jpg', src: '/videos/capstonex.mp4', captions: '', caption: 'CapstoneX project walkthrough.' },
+  { title: 'Automarket', duration: '01:10', poster: '/videos/automarket-poster.jpg', src: '/videos/automarket.mp4', captions: '', caption: 'Automarket project walkthrough.' },
+  { title: 'Carbon Footprint AI', duration: '01:00', poster: '/videos/carbon-footprint-ai-poster.jpg', src: '/videos/carbon-footprint-ai.mp4', captions: '', caption: 'Carbon Footprint AI project walkthrough.' },
 ];
 
 export const games = [

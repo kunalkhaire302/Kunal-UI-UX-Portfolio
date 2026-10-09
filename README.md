@@ -49,7 +49,7 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 - `src/data/projects.ts` — verified project descriptions plus clearly labeled proposed interface directions.
 - `src/data/studio.ts` — photography, videos, games, and profile emphasis. Entries are intentionally marked as placeholders.
 - `public/photos/` — placeholder gallery art. Replace files or update paths in `studio.ts`.
-- `public/videos/` — placeholder posters and a sample VTT file. Real video requires compressed MP4/WebM plus accurate captions.
+- `public/videos/` — optimized project videos, generated poster frames, and the sample VTT structure for future captions.
 - `src/components/ProjectVisual.tsx` — illustrative UI concepts, not original product screenshots.
 - `DESIGN.md` — visual tokens, type, interaction rules, UI/UX concepts, and content-integrity rules.
 
@@ -58,7 +58,7 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 - Add the real portrait and update the Player Profile visual.
 - Replace all placeholder photographs and add verified location/camera/settings metadata.
 - Replace game placeholders with verified favorite titles and genres.
-- Add project video files and accurate caption tracks.
+- Add accurate caption tracks for the three project videos when transcripts are available.
 - Add the original resume at `public/resume.pdf`, then set `profile.resume` to `/resume.pdf`.
 - Add the verified email address to `profile.email`.
 - Replace illustrative project visuals with original screenshots only when permission and source files are available.
