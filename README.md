@@ -47,8 +47,8 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 ## Where the content lives
 
 - `src/data/projects.ts` — verified project descriptions plus clearly labeled proposed interface directions.
-- `src/data/studio.ts` — photography, videos, games, and profile emphasis. Entries are intentionally marked as placeholders.
-- `public/photos/` — placeholder gallery art. Replace files or update paths in `studio.ts`.
+- `src/data/studio.ts` — photography, videos, games, and profile emphasis. Unverified details are explicitly marked as unavailable.
+- `public/photos/` — optimized portfolio photography used by the Capture gallery.
 - `public/videos/` — optimized project videos, generated poster frames, and the sample VTT structure for future captions.
 - `src/components/ProjectVisual.tsx` — illustrative UI concepts, not original product screenshots.
 - `DESIGN.md` — visual tokens, type, interaction rules, UI/UX concepts, and content-integrity rules.
@@ -56,7 +56,7 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 ## Content still required
 
 - Add the real portrait and update the Player Profile visual.
-- Replace all placeholder photographs and add verified location/camera/settings metadata.
+- Add verified location/camera/settings metadata for the Capture photographs when available.
 - Replace game placeholders with verified favorite titles and genres.
 - Add accurate caption tracks for the three project videos when transcripts are available.
 - Add the original resume at `public/resume.pdf`, then set `profile.resume` to `/resume.pdf`.
@@ -77,7 +77,7 @@ The interface deliberately avoids inventing personal facts, user-research findin
 - Lazy-loaded photography and video posters
 - No remote font calls, analytics, or tracking libraries
 
-Run a final Lighthouse and real-device pass after replacing placeholder media because asset dimensions and encoding can materially change performance.
+Run a final Lighthouse and real-device pass after changing media because asset dimensions and encoding can materially change performance.
 
 ## Deployment
 

@@ -258,9 +258,9 @@ function Capture() {
   }, [lightboxOpen]);
   const selected = active === null ? null : photos[active];
   return <section className="cr-section cr-capture" id="capture" aria-labelledby="capture-title">
-    <div className="cr-section-heading"><span className="cr-index">02</span><div><p className="cr-kicker">CAPTURE / PHOTOGRAPHY</p><h2 id="capture-title">Train the eye<br />to find focus.</h2></div><p>Photography turns hierarchy into instinct: choose the subject, remove distraction, and let light direct attention. Replace these labeled studies with Kunal's work.</p></div>
+    <div className="cr-section-heading"><span className="cr-index">02</span><div><p className="cr-kicker">CAPTURE / PHOTOGRAPHY</p><h2 id="capture-title">Train the eye<br />to find focus.</h2></div><p>Photography turns hierarchy into instinct: choose the subject, remove distraction, and let light direct attention. These frames explore scale, atmosphere, movement, and focus.</p></div>
     <div className="cr-gallery">{photos.map((photo, index) => <button key={photo.src} type="button" onClick={() => setActive(index)} aria-label={`Open ${photo.title} in lightbox`}><img src={photo.src} alt={photo.alt} loading="lazy" /><span><b>{photo.title}</b><small>{photo.location}</small></span></button>)}</div>
-    <p className="cr-placeholder-note">PLACEHOLDER MEDIA / Add verified photographs and EXIF details in <code>src/data/studio.ts</code>.</p>
+    <p className="cr-placeholder-note">PHOTO METADATA / Camera, location, and exposure details remain unspecified until verified.</p>
     <AnimatePresence>{selected && <motion.div className="cr-lightbox" role="dialog" aria-modal="true" aria-label={`${selected.title} image viewer`} onMouseDown={(event) => event.currentTarget === event.target && setActive(null)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <button ref={closeButton} className="cr-lightbox-close" type="button" onClick={() => setActive(null)} aria-label="Close image viewer"><X /></button>
       <button className="cr-lightbox-nav is-left" type="button" onClick={() => setActive((active! - 1 + photos.length) % photos.length)} aria-label="Previous photograph"><ChevronLeft /></button>
