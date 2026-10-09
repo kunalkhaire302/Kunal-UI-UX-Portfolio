@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { lightWaveColors, waveScenes, type WaveScene } from './scenes';
 
 type Particle = { x: number; y: number; vx: number; vy: number; radius: number; alpha: number };
-type Ripple = { x: number; age: number };
+type Ripple = { x: number; y: number; age: number };
 type IdleWindow = Window & { requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number; cancelIdleCallback?: (handle: number) => void };
 
 const TAU = Math.PI * 2;
@@ -83,7 +83,9 @@ export function WaveBackground({ routeKey }: { routeKey: string }) {
         const particle = particles[index];
         if (!staticFrame) { particle.x += particle.vx * delta; particle.y += particle.vy * delta; }
         if (particle.y < -4) { particle.y = height + 4; particle.x = Math.random() * width; }
-        context.fillStyle = `rgba(${Math.round(mix(148,102,themeMix))},${Math.round(mix(196,147,themeMix))},${Math.round(mix(255,164,themeMix))},${particle.alpha * mix(1,.55,themeMix)})`;
+        if (particle.x < -4) particle.x = width + 4; else if (particle.x > width + 4) particle.x = -4;
+        const twinkle = staticFrame ? .8 : .72 + Math.sin(now * .0016 + index * 1.7) * .28;
+        context.fillStyle = `rgba(${Math.round(mix(148,102,themeMix))},${Math.round(mix(196,147,themeMix))},${Math.round(mix(255,164,themeMix))},${particle.alpha * twinkle * mix(1,.55,themeMix)})`;
         context.beginPath(); context.arc(particle.x, particle.y, particle.radius, 0, TAU); context.fill();
       }
       context.globalCompositeOperation = themeMix > .55 ? 'source-over' : 'lighter';
@@ -96,16 +98,19 @@ export function WaveBackground({ routeKey }: { routeKey: string }) {
         context.shadowBlur = mix(lowPower ? 6 : 18, 3, themeMix); context.shadowColor = `rgb(${red},${green},${blue})`;
         const layerY = active.converge ? mix(active.yPosition + (layer - 1) * .14, .5, .72) : active.yPosition + (layer - 1) * .14;
         const parallaxX = (pointer.x - .5) * (layer + 1) * 12, parallaxY = (pointer.y - .5) * (layer + 1) * 10;
-        for (let line = 0; line < stackedLines; line += 1) {
-          context.beginPath(); context.lineWidth = .8 + line * .55;
-          context.strokeStyle = `rgba(${red},${green},${blue},${active.opacity * (.48 - line * .065) * mix(1,.82,themeMix)})`;
+        for (let line = -1; line < stackedLines; line += 1) {
+          const isGlow = line === -1;
+          context.beginPath(); context.lineWidth = isGlow ? (lowPower ? 8 : 16) : .8 + line * .55;
+          context.strokeStyle = `rgba(${red},${green},${blue},${active.opacity * (isGlow ? .07 : .48 - line * .065) * mix(1,.82,themeMix)})`;
           for (let x = -18; x <= width + 18; x += xStep) {
             const normalized = (x + parallaxX) / Math.max(width, 1);
             const time = staticFrame ? 1.7 : now * .001 * speeds[layer] * active.speed * (1 + scrollEnergy * .5);
-            const amplitude = amplitudes[layer] * active.amplitude * (1 + scrollEnergy * .28);
-            let y = height * layerY + Math.sin(normalized * TAU * (1.12 + layer * .2) + time + layer) * amplitude + Math.sin(normalized * TAU * 2.3 - time * 1.35 + layer) * amplitude * .24 + (line - (stackedLines - 1) / 2) * 9 + parallaxY;
+            const breath = staticFrame ? 1 : 1 + Math.sin(now * .00045 + layer * 1.8) * .065;
+            const amplitude = amplitudes[layer] * active.amplitude * breath * (1 + scrollEnergy * .28);
+            const lineOffset = isGlow ? 0 : (line - (stackedLines - 1) / 2) * (8 + Math.sin(normalized * TAU * 1.6 + time) * 2.5);
+            let y = height * layerY + Math.sin(normalized * TAU * (1.12 + layer * .2) + time + layer) * amplitude + Math.sin(normalized * TAU * 2.3 - time * 1.35 + layer) * amplitude * .24 + Math.sin(normalized * TAU * .52 + time * .35) * amplitude * .12 + lineOffset + parallaxY;
             if (finePointer && !reduced) { const distance = x - pointer.x * width; const pull = Math.exp(-(distance * distance) / (2 * Math.pow(width * .16, 2))); y += Math.max(-62, Math.min(62, (pointer.y * height - y) * .16)) * pull; }
-            for (const wave of ripples) { const distance = x - wave.x; y += Math.sin(Math.abs(distance) * .035 - wave.age * 8) * 18 * Math.exp(-(distance * distance) / (2 * Math.pow(width * .2, 2))) * Math.max(0, 1 - wave.age / 2.2); }
+            for (const wave of ripples) { const distance = Math.hypot(x - wave.x, y - wave.y); y += Math.sin(distance * .035 - wave.age * 8) * 20 * Math.exp(-(distance * distance) / (2 * Math.pow(width * .18, 2))) * Math.max(0, 1 - wave.age / 2.2); }
             if (x === -18) context.moveTo(x, y); else context.lineTo(x, y);
           }
           context.stroke();
@@ -133,7 +138,7 @@ export function WaveBackground({ routeKey }: { routeKey: string }) {
     };
     const pointerMove = (event: PointerEvent) => { pointer.targetX = event.clientX / width; pointer.targetY = event.clientY / height; };
     const scroll = () => { const now = performance.now(); scrollTarget = Math.min(1.4, Math.abs(scrollY - previousScroll) / Math.max(now - previousScrollTime, 16) * .55); previousScroll = scrollY; previousScrollTime = now; };
-    const ripple = (event: PointerEvent) => { if (!reduced) ripples.push({ x: event.clientX, age: 0 }); };
+    const ripple = (event: PointerEvent) => { if (!reduced) ripples.push({ x: event.clientX, y: event.clientY, age: 0 }); };
     const themeObserver = new MutationObserver(() => { themeTarget = document.documentElement.dataset.theme === 'light' ? 1 : 0; if (reduced) { themeMix = themeTarget; restart(); } });
     const resizeObserver = new ResizeObserver(() => { clearTimeout(resizeTimer); resizeTimer = window.setTimeout(() => { resize(); if (reduced) restart(); }, 120); });
     const visibility = () => { pageVisible = !document.hidden; if (pageVisible && initialized) restart(); else cancelAnimationFrame(frame); };
