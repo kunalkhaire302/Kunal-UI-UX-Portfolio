@@ -1,45 +1,84 @@
-# Kunal Khaire — Portfolio
+# Kunal's Control Room
 
-A responsive React, TypeScript, Vite, and Tailwind CSS portfolio with three project case studies, light/dark themes, mobile navigation, and static HTML output for search engines. Manrope is served locally under its included open font license.
+A UI/UX-focused portfolio that connects Kunal Khaire's product work with the visual and interaction lessons found in gaming, photography, and video editing.
+
+> I don't just design screens, I design experiences — and my hobbies taught me how.
+
+## Stack
+
+- React 19 + TypeScript + Vite
+- Tailwind CSS 4 (existing build integration)
+- Framer Motion for component and route transitions
+- GSAP + ScrollTrigger connected to Lenis smooth scrolling
+- Space Grotesk, Manrope, and JetBrains Mono bundled locally
+- Static prerendering for the homepage and every `/work/:slug` route
+- Vercel SPA rewrite for direct case-study URLs
 
 ## Run locally
 
-Requires Node.js 20.19+ or 22.12+ and npm.
+Node.js 20.19+ or 22.12+ is recommended.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-## Production
+Production check:
 
 ```sh
 npm run build
 npm run preview
 ```
 
-Deploy the `dist` directory to a static host. Each case study has its own generated HTML entry point under `work/`. Configure the host to serve directory index files and use `/index.html` as the SPA fallback for unknown URLs if a custom client-side 404 is desired. Update the origin in `scripts/prerender.mjs` when deploying to a different domain.
+The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.txt` in `dist/`.
 
-## Content
+## Page structure
 
-- `src/data/profile.ts`: professional links, experience, education, skills, and process.
-- `src/data/projects.ts`: documented project facts and explicitly labeled proposed interface directions.
-- `src/components/ProjectVisual.tsx`: illustrative interface concepts, not original application screenshots.
+1. Session-only boot sequence
+2. Control-room hero with Play, Capture, Create, and Quests navigation
+3. Player Profile and portfolio-emphasis bars
+4. Three featured UI/UX Quests plus two supporting product explorations
+5. Structured case studies: Research → Wireframe → Prototype → Test
+6. Capture photography gallery with keyboard lightbox
+7. Create editing timeline with keyboard-operable playhead
+8. Play cards connecting game patterns to UX lessons
+9. Player 2 contact finale
 
-The supplied brief is the factual source. It did not include the original resume PDF, UI/UX report, email address, project screenshots, project repositories, or measured outcomes. Professional GitHub and LinkedIn links were provided separately.
+## Where the content lives
 
-### Complete the missing information
+- `src/data/projects.ts` — verified project descriptions plus clearly labeled proposed interface directions.
+- `src/data/studio.ts` — photography, videos, games, and profile emphasis. Entries are intentionally marked as placeholders.
+- `public/photos/` — placeholder gallery art. Replace files or update paths in `studio.ts`.
+- `public/videos/` — placeholder posters and a sample VTT file. Real video requires compressed MP4/WebM plus accurate captions.
+- `src/components/ProjectVisual.tsx` — illustrative UI concepts, not original product screenshots.
+- `DESIGN.md` — visual tokens, type, interaction rules, UI/UX concepts, and content-integrity rules.
 
-1. Add the original resume PDF to `public/resume.pdf`, then set `profile.resume` to `/resume.pdf`. Existing resume links become download links automatically.
-2. Set `profile.email` to the verified email address to enable the email link.
-3. Review project role boundaries, original screenshots, and project-specific learnings before replacing the clearly marked conceptual content.
+## Content still required
 
-No contact form or backend is required: LinkedIn and GitHub links are live. Resume links currently navigate to an explicit availability notice. No resume has been generated.
+- Add the real portrait and update the Player Profile visual.
+- Replace all placeholder photographs and add verified location/camera/settings metadata.
+- Replace game placeholders with verified favorite titles and genres.
+- Add project video files and accurate caption tracks.
+- Add the original resume at `public/resume.pdf`, then set `profile.resume` to `/resume.pdf`.
+- Add the verified email address to `profile.email`.
+- Replace illustrative project visuals with original screenshots only when permission and source files are available.
+- Add measured outcomes or testing results only when evidence is available.
+
+The interface deliberately avoids inventing personal facts, user-research findings, performance metrics, or project outcomes.
 
 ## Accessibility and performance
 
-Semantic landmarks, a skip link, visible focus rings, keyboard-operated mobile navigation and accordions, Escape-to-close navigation, reduced-motion support, responsive layouts, and persistent themes are included. Interface concepts have descriptive accessible labels; their decorative detail is hidden from assistive technology. No analytics or tracking libraries are installed.
+- Semantic landmarks and a skip link
+- Visible focus states and 44px+ primary touch targets
+- Escape-to-close mobile navigation and lightbox
+- Lightbox focus loop plus arrow-key navigation
+- Native range controls for comparison and video timeline
+- `prefers-reduced-motion` disables animation, parallax, custom cursor, and smooth scrolling
+- Lazy-loaded photography and video posters
+- No remote font calls, analytics, or tracking libraries
 
-Audit results are summarized in `QUALITY.md`.
+Run a final Lighthouse and real-device pass after replacing placeholder media because asset dimensions and encoding can materially change performance.
 
-# Kunal-UI-UX-Portfolio
+## Deployment
+
+The production repository is connected to Vercel. `vercel.json` rewrites application routes to `index.html`; prerendered route folders still provide metadata and no-JavaScript content. The canonical origin is configured in `scripts/prerender.mjs`.

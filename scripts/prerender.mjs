@@ -2,13 +2,13 @@ import { createServer } from 'vite';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-const origin = 'https://kunal-khaire-portfolio.vivid-elk-5508.chatgpt.site';
+const origin = 'https://kunal-ui-ux-portfolio.vercel.app';
 const server = await createServer({server:{middlewareMode:true},appType:'custom'});
 try {
  const {App} = await server.ssrLoadModule('/src/main.tsx');
  const {projects} = await server.ssrLoadModule('/src/data/projects.ts');
  const template = await readFile('dist/index.html','utf8');
- const routes = [{path:'',title:'Kunal Khaire — UI/UX Designer & Developer',description:'Kunal Khaire designs and builds thoughtful digital products. Explore selected work, experience, and a considered approach to UI/UX.'},...projects.map(p=>({path:`/work/${p.slug}`,title:`${p.title} — Kunal Khaire`,description:`${p.title}: ${p.description} Explore documented capabilities, technology, and interface direction.`}))];
+ const routes = [{path:'',title:"Kunal's Control Room — UI/UX Portfolio",description:"I design experiences, not just screens. Explore Kunal Khaire's UI/UX case studies, photography, video, gaming insights, and frontend craft."},...projects.map(p=>({path:`/work/${p.slug}`,title:`${p.title} — Kunal Khaire`,description:`${p.title}: ${p.description} Explore the structured case study, UI/UX concepts, and interface direction.`}))];
  const escape = s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
  for(const route of routes){
   const body=renderToString(React.createElement(App,{initialPath:route.path}));

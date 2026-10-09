@@ -83,7 +83,7 @@ function useStudioEffects() {
       cleanups.forEach((cleanup) => cleanup());
       destroySmoothScroll();
     };
-  });
+  }, []);
 }
 
 function BootScreen() {
@@ -123,6 +123,12 @@ function Header({ navigate }: { navigate: Navigate }) {
     setTheme(next);
     document.documentElement.dataset.theme = next;
   }, []);
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: KeyboardEvent) => event.key === 'Escape' && setOpen(false);
+    addEventListener('keydown', close);
+    return () => removeEventListener('keydown', close);
+  }, [open]);
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
@@ -228,19 +234,28 @@ function Quests({ navigate }: { navigate: Navigate }) {
 function Capture() {
   const [active, setActive] = useState<number | null>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
+  const lightboxOpen = active !== null;
   useEffect(() => {
-    if (active === null) return;
-    const previous = document.activeElement as HTMLElement | null;
+    if (!lightboxOpen) return;
+    returnFocus.current = document.activeElement as HTMLElement | null;
     const keydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setActive(null);
       if (event.key === 'ArrowRight') setActive((current) => current === null ? null : (current + 1) % photos.length);
       if (event.key === 'ArrowLeft') setActive((current) => current === null ? null : (current - 1 + photos.length) % photos.length);
+      if (event.key === 'Tab') {
+        const controls = [...document.querySelectorAll<HTMLElement>('.cr-lightbox button')];
+        if (!controls.length) return;
+        const current = controls.indexOf(document.activeElement as HTMLElement);
+        const next = event.shiftKey ? (current - 1 + controls.length) % controls.length : (current + 1) % controls.length;
+        event.preventDefault(); controls[next].focus();
+      }
     };
     document.body.style.overflow = 'hidden';
     addEventListener('keydown', keydown);
     requestAnimationFrame(() => closeButton.current?.focus());
-    return () => { document.body.style.overflow = ''; removeEventListener('keydown', keydown); previous?.focus(); };
-  }, [active]);
+    return () => { document.body.style.overflow = ''; removeEventListener('keydown', keydown); returnFocus.current?.focus(); returnFocus.current = null; };
+  }, [lightboxOpen]);
   const selected = active === null ? null : photos[active];
   return <section className="cr-section cr-capture" id="capture" aria-labelledby="capture-title">
     <div className="cr-section-heading"><span className="cr-index">02</span><div><p className="cr-kicker">CAPTURE / PHOTOGRAPHY</p><h2 id="capture-title">Train the eye<br />to find focus.</h2></div><p>Photography turns hierarchy into instinct: choose the subject, remove distraction, and let light direct attention. Replace these labeled studies with Kunal's work.</p></div>
@@ -374,7 +389,7 @@ export function App({ initialPath = '' }: { initialPath?: string }) {
   return <div className="cr-app">
     <a className="skip-link" href="#main">Skip to content</a><BootScreen /><div className="cr-xp" aria-hidden="true"><i /></div><div className="cr-cursor" aria-hidden="true" />
     <Header navigate={navigate} />
-    <AnimatePresence mode="wait"><motion.main id="main" key={path} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>{isUnknown ? <NotFound navigate={navigate} /> : project ? <CaseStudy project={project} navigate={navigate} /> : <Home navigate={navigate} />}</motion.main></AnimatePresence>
+    <AnimatePresence mode="wait" initial={false}><motion.main id="main" key={path} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>{isUnknown ? <NotFound navigate={navigate} /> : project ? <CaseStudy project={project} navigate={navigate} /> : <Home navigate={navigate} />}</motion.main></AnimatePresence>
     <footer className="cr-footer"><span>KK / CONTROL ROOM</span><p>Designed and built by Kunal Khaire.</p><a href="#home">Back to top ↑</a></footer>
   </div>;
 }
