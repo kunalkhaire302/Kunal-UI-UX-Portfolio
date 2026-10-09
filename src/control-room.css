@@ -1,0 +1,31 @@
+:root {
+  --cr-bg: #07111f;
+  --cr-panel: #0d1b2d;
+  --cr-panel-2: #12243a;
+  --cr-violet: #8b5cf6;
+  --cr-cyan: #31d7ff;
+  --cr-warm: #ffb15c;
+  --cr-text: #edf6ff;
+  --cr-muted: #9aabc0;
+  --cr-line: #22344b;
+  --cr-grid: rgba(49, 215, 255, .06);
+  --cr-shadow: 0 28px 80px rgba(0, 0, 0, .34);
+  --cr-radius: 22px;
+  --cr-mono: 'JetBrains Mono Variable', monospace;
+  --cr-display: 'Space Grotesk Variable', sans-serif;
+  --cr-body: 'Manrope Variable', sans-serif;
+}
+
+:root[data-theme='light'] {
+  --cr-bg: #f4f7fb;
+  --cr-panel: #ffffff;
+  --cr-panel-2: #e9eff7;
+  --cr-violet: #6d38d6;
+  --cr-cyan: #087da1;
+  --cr-warm: #b85b00;
+  --cr-text: #132033;
+  --cr-muted: #526176;
+  --cr-line: #d7e0eb;
+  --cr-grid: rgba(8, 125, 161, .07);
+  --cr-shadow: 0 28px 70px rgba(28, 45, 70, .13);
+}

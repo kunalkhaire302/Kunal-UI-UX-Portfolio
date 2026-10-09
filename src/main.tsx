@@ -4,7 +4,11 @@ import { ArrowUpRight, ArrowDown, ArrowLeft, Sun, Moon, Menu, X, Github, Linkedi
 import { projects, type Project } from './data/projects';
 import { profile, skillGroups, designInterests, process, uxConcepts, uxConceptCategories, type UXConcept } from './data/profile';
 import { ProjectVisual } from './components/ProjectVisual';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
 import './styles.css';
+import './control-room.css';
 const links = ['Home','Work','Concepts','About','Skills','Process','Contact'];
 function ResumeLink({className=''}:{className?:string}) {return profile.resume ? <a className={className} href={profile.resume} download>Resume <Download size={15}/></a> : <a className={className} href="/#resume-status" aria-label="Resume — file not yet supplied">Resume <Download size={15}/></a>}
 export function App({initialPath=''}:{initialPath?:string}){
