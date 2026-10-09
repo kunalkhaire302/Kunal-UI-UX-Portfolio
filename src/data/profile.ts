@@ -46,3 +46,4 @@ export const uxConcepts: UXConcept[] = [
  { id: 'accessibility', name: 'Accessibility', category: 'Accessibility', description: 'The portfolio supports keyboard use, clear focus states, reduced motion, and meaningful labels.', appliedAt: 'Skip link, focus indicators, semantic sections, ARIA labels, and reduced-motion styles.', principle: 'The interface should work for as many people as possible.' },
  { id: 'responsive-design', name: 'Responsive Design', category: 'Responsive Design', description: 'Layouts, text, and navigation adapt to different screen sizes.', appliedAt: 'Flexible grids, mobile navigation, fluid type, and stacked content on small screens.', principle: 'The experience should remain clear on desktop, tablet, and mobile.' },
 ];
+
