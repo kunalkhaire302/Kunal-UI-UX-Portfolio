@@ -338,10 +338,11 @@ function Home({ navigate }: { navigate: Navigate }) {
 
 function BeforeAfterSlider({ project }: { project: Project }) {
   const [position, setPosition] = useState(52);
+  const sideStyle = { padding: '2rem', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column' as const, gap: '0.75rem', overflow: 'hidden' };
   return <div className="cr-comparison">
     <div className="cr-compare-stage">
-      <div className="cr-compare-side is-before"><span>PROBLEM SPACE</span><strong>{project.challenge}</strong></div>
-      <div className="cr-compare-side is-after" style={{ clipPath: `inset(0 0 0 ${position}%)` }}><span>PORTFOLIO DIRECTION</span><strong>{project.approach}</strong></div>
+      <div className="cr-compare-side is-before" style={sideStyle}><span>PROBLEM SPACE</span><strong style={{ fontSize: '1rem', fontWeight: 400 }}>{project.challenge}</strong></div>
+      <div className="cr-compare-side is-after" style={{ ...sideStyle, clipPath: `inset(0 0 0 ${position}%)` }}><span>PORTFOLIO DIRECTION</span><strong style={{ fontSize: '1rem', fontWeight: 400 }}>{project.approach}</strong></div>
       <i style={{ left: `${position}%` }} aria-hidden="true"><b>↔</b></i>
     </div>
     <label><span>Compare framing and proposed direction</span><output>{position}%</output><input type="range" min="10" max="90" value={position} onChange={(event) => setPosition(Number(event.target.value))} aria-label="Reveal proposed interface direction" /></label>
