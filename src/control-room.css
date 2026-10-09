@@ -31,14 +31,14 @@
 }
 
 .cr-app { position: relative; isolation: isolate; min-height: 100vh; overflow: clip; background: transparent; color: var(--cr-text); font-family: var(--cr-body); transition: color .25s; }
-.cr-app::before { content: ''; position: fixed; z-index: -9; inset: 0; background: rgba(7,17,31,.4); pointer-events: none; transition: background .4s; }
-:root[data-theme='light'] .cr-app::before { background: rgba(247,247,242,.34); }
+.cr-app::before { content: ''; position: fixed; z-index: -9; inset: 0; background: rgba(7,17,31,.14); pointer-events: none; transition: background .4s; }
+:root[data-theme='light'] .cr-app::before { background: rgba(247,247,242,.14); }
 .wave-background { position: fixed; z-index: -10; inset: 0; overflow: hidden; pointer-events: none; background: radial-gradient(circle at 35% 45%, #17213b 0, #0b0f1a 62%); }
 .wave-background canvas, .wave-vignette, .wave-grain { position: absolute; inset: 0; width: 100%; height: 100%; }
-.wave-vignette { background: radial-gradient(circle at center, transparent 28%, rgba(4,8,16,.67) 100%); }
+.wave-vignette { background: radial-gradient(circle at center, transparent 38%, rgba(4,8,16,.42) 100%); }
 .wave-grain { opacity: .035; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E"); }
 :root[data-theme='light'] .wave-background { background: radial-gradient(circle at 35% 45%, #fff 0, #f7f7f2 66%); }
-:root[data-theme='light'] .wave-vignette { background: radial-gradient(circle at center, transparent 45%, rgba(214,216,210,.42) 100%); }
+:root[data-theme='light'] .wave-vignette { background: radial-gradient(circle at center, transparent 52%, rgba(214,216,210,.24) 100%); }
 :root[data-theme='light'] .wave-grain { opacity: .022; mix-blend-mode: multiply; }
 .wave-motion-toggle { min-height: 40px; padding: 0 13px; border: 1px solid var(--cr-line); background: color-mix(in srgb, var(--cr-panel) 76%, transparent); font: .62rem var(--cr-mono); letter-spacing: .05em; }
 .cr-app *, .cr-app *::before, .cr-app *::after { box-sizing: border-box; }

@@ -98,7 +98,7 @@ export function WaveBackground({ routeKey }: { routeKey: string }) {
         const parallaxX = (pointer.x - .5) * (layer + 1) * 12, parallaxY = (pointer.y - .5) * (layer + 1) * 10;
         for (let line = 0; line < stackedLines; line += 1) {
           context.beginPath(); context.lineWidth = .8 + line * .55;
-          context.strokeStyle = `rgba(${red},${green},${blue},${active.opacity * (.29 - line * .045) * mix(1,.72,themeMix)})`;
+          context.strokeStyle = `rgba(${red},${green},${blue},${active.opacity * (.48 - line * .065) * mix(1,.82,themeMix)})`;
           for (let x = -18; x <= width + 18; x += xStep) {
             const normalized = (x + parallaxX) / Math.max(width, 1);
             const time = staticFrame ? 1.7 : now * .001 * speeds[layer] * active.speed * (1 + scrollEnergy * .5);
