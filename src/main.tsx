@@ -89,6 +89,7 @@ function useStudioEffects() {
 
 function BootScreen() {
   const [visible, setVisible] = useState(false);
+  const skipButton = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
   useEffect(() => {
     if (sessionStorage.getItem('control-room-booted')) return;
@@ -97,14 +98,27 @@ function BootScreen() {
     const timer = window.setTimeout(() => setVisible(false), reduced ? 100 : 1500);
     return () => clearTimeout(timer);
   }, [reduced]);
-  return <AnimatePresence>{visible && <motion.div className="cr-boot" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .24 }}>
+  useEffect(() => {
+    if (!visible) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    skipButton.current?.focus();
+    const containFocus = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') { event.preventDefault(); skipButton.current?.focus(); }
+      if (event.key === 'Escape') setVisible(false);
+    };
+    addEventListener('keydown', containFocus);
+    return () => { document.body.style.overflow = overflow; removeEventListener('keydown', containFocus); previous?.focus(); };
+  }, [visible]);
+  return <AnimatePresence>{visible && <motion.div className="cr-boot" role="dialog" aria-modal="true" aria-label="Loading Kunal's Control Room" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .24 }}>
     <div className="cr-boot-flash" />
     <div className="cr-boot-console">
       <span className="cr-kicker">SYSTEM / KCR-26</span>
       <Power aria-hidden="true" />
       <strong>KUNAL'S<br />CONTROL ROOM</strong>
       <div className="cr-boot-line"><i /><span>LOADING EXPERIENCE</span></div>
-      <button type="button" onClick={() => setVisible(false)}>Skip intro</button>
+      <button ref={skipButton} type="button" onClick={() => setVisible(false)}>Skip intro</button>
     </div>
   </motion.div>}</AnimatePresence>;
 }
@@ -118,6 +132,8 @@ function ResumeLink({ className = '' }: { className?: string }) {
 function Header({ navigate }: { navigate: Navigate }) {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const navigation = useRef<HTMLElement>(null);
   useEffect(() => {
     const saved = localStorage.getItem('portfolio-theme');
     const next = saved === 'light' ? 'light' : 'dark';
@@ -126,7 +142,12 @@ function Header({ navigate }: { navigate: Navigate }) {
   }, []);
   useEffect(() => {
     if (!open) return;
-    const close = (event: KeyboardEvent) => event.key === 'Escape' && setOpen(false);
+    navigation.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+    const close = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      menuButton.current?.focus();
+    };
     addEventListener('keydown', close);
     return () => removeEventListener('keydown', close);
   }, [open]);
@@ -143,7 +164,7 @@ function Header({ navigate }: { navigate: Navigate }) {
   };
   return <header className="cr-header">
     <a className="cr-brand" href="/" onClick={home} aria-label="Kunal Khaire, control room home"><span>KK</span><b>CONTROL ROOM</b></a>
-    <nav id="control-nav" className={open ? 'is-open' : ''} aria-label="Primary navigation">
+    <nav ref={navigation} id="control-nav" className={open ? 'is-open' : ''} aria-label="Primary navigation">
       {rooms.map((room) => <a key={room.id} href={`/#${room.id}`} onClick={() => setOpen(false)}>{room.label}</a>)}
       <a href="/#contact" onClick={() => setOpen(false)}>Contact</a>
     </nav>
@@ -151,7 +172,7 @@ function Header({ navigate }: { navigate: Navigate }) {
       <span className="cr-system-state"><i /> AVAILABLE</span>
       <ResumeLink className="cr-resume" />
       <button className="cr-icon-button" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>{theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}</button>
-      <button className="cr-icon-button cr-menu" type="button" aria-expanded={open} aria-controls="control-nav" aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
+      <button ref={menuButton} className="cr-icon-button cr-menu" type="button" aria-expanded={open} aria-controls="control-nav" aria-label={open ? 'Close navigation' : 'Open navigation'} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
     </div>
   </header>;
 }
@@ -280,12 +301,13 @@ function VideoClip({ video, index, selected, onSelect }: { video: typeof videos[
 
 function CreateStudio() {
   const [playhead, setPlayhead] = useState(0);
+  const reduced = useReducedMotion();
   const active = Math.min(videos.length - 1, Math.floor(playhead / (100 / videos.length)));
   const select = (index: number) => setPlayhead(index * (100 / videos.length) + 8);
   return <section className="cr-section cr-create" id="create" aria-labelledby="create-title">
     <div className="cr-section-heading"><span className="cr-index">03</span><div><p className="cr-kicker">CREATE / VIDEO STUDIO</p><h2 id="create-title">Pacing gives<br />ideas momentum.</h2></div><p>Editing is interaction design over time: sequence information, create anticipation, and give every transition a reason.</p></div>
     <div className="cr-edit-bay">
-      <div className="cr-monitor"><video key={videos[active].src} src={videos[active].src} poster={videos[active].poster} controls autoPlay muted playsInline preload="metadata" aria-label={`${videos[active].title} project video`}>{videos[active].captions && <track kind="captions" src={videos[active].captions} srcLang="en" label="English" default />}</video><div><span className="cr-kicker">PROGRAM MONITOR</span><b>{videos[active].title}</b><small>{videos[active].caption}</small></div></div>
+      <div className="cr-monitor"><video key={videos[active].src} src={videos[active].src} poster={videos[active].poster} controls autoPlay={!reduced} muted playsInline preload="metadata" aria-label={`${videos[active].title} project video`}>{videos[active].captions && <track kind="captions" src={videos[active].captions} srcLang="en" label="English" default />}</video><div><span className="cr-kicker">PROGRAM MONITOR</span><b>{videos[active].title}</b><small>{videos[active].caption}</small></div></div>
       <div className="cr-clip-grid">{videos.map((video, index) => <VideoClip key={video.title} video={video} index={index} selected={active === index} onSelect={() => select(index)} />)}</div>
       <div className="cr-timeline"><div className="cr-time-head"><span>00:00:00</span><strong>EDIT TIMELINE / DRAG OR USE ARROW KEYS</strong><output>{String(Math.round(playhead)).padStart(2, '0')}%</output></div><div className="cr-track" aria-hidden="true">{videos.map((video, index) => <span key={video.title} className={active === index ? 'is-active' : ''}>C{index + 1}</span>)}<i style={{ left: `${playhead}%` }} /></div><label><span className="sr-only">Timeline playhead position</span><input type="range" min="0" max="100" value={playhead} onChange={(event) => setPlayhead(Number(event.target.value))} /></label></div>
     </div>
