@@ -368,7 +368,7 @@ function CaseStudy({ project, navigate }: { project: Project; navigate: Navigate
   return <article className="cr-case">
     <header className="cr-case-hero">
       <button className="cr-text-button" onClick={() => navigate('/')}><ArrowLeft size={17} /> Back to quests</button>
-      <div className="cr-case-title"><div><span className="cr-kicker">QUEST {String(index + 1).padStart(2, '0')} / {project.category}</span><h1>{project.title}</h1><p>{project.description}</p></div><div className="cr-case-facts"><span><small>ROLE</small>{project.role}</span><span><small>STACK</small>{project.stack.slice(0, 3).join(' · ')}</span><span><small>CASE TYPE</small>Structured portfolio narrative</span></div></div>
+      <div className="cr-case-title"><div><span className="cr-kicker">QUEST {String(index + 1).padStart(2, '0')} / {project.category}</span><h1>{project.title}</h1><p>{project.description}</p></div><div className="cr-case-facts"><span><small>ROLE</small>{project.role}</span><span><small>STACK</small>{project.stack.slice(0, 3).join(' · ')}</span>{project.liveLink && <span><small>LIVE LINK</small><a href={project.liveLink} target="_blank" rel="noreferrer" style={{color: 'inherit', textDecoration: 'underline'}}>Visit site ↗</a></span>}<span><small>CASE TYPE</small>Structured portfolio narrative</span></div></div>
       <ProjectVisual slug={project.slug} />
     </header>
     <div className="cr-case-layout">

@@ -1,4 +1,4 @@
-export type Project = { slug: string; title: string; category: string; description: string; role: string; stack: string[]; highlights: string[]; context: string; useCase: string; goals: string; approach: string; decisions: string[]; challenge: string; learning: string; uiuxConcepts: { concept: string; application: string }[] };
+export type Project = { slug: string; title: string; category: string; description: string; role: string; stack: string[]; highlights: string[]; context: string; useCase: string; goals: string; approach: string; decisions: string[]; challenge: string; learning: string; uiuxConcepts: { concept: string; application: string }[]; liveLink?: string; };
 export const projects: Project[] = [
  { slug: 'capstonex', title: 'CapstoneX', category: 'Full-stack product', description: 'A clearer path from project proposal to progress.', role: 'Full-stack development', stack: ['React.js', 'Node.js', 'Express.js', 'PostgreSQL', 'Tailwind CSS', 'JWT'], highlights: ['Role-based access', 'Proposal submission & tracking', 'Project workflow management', 'JWT authentication', 'REST API optimization'], context: 'An academic project governance and intelligence platform that brings proposal submission, tracking, and project workflows into one application.', useCase: 'People submitting and managing academic projects, with access governed by their role.', goals: 'Support proposal submission, make project progress trackable, and protect role-specific functionality.', approach: 'A useful interface direction is to organize work around a proposal\'s status and the next action. The concept below explores this direction; original project design artifacts were not supplied.', decisions: ['Group proposals by workflow status to make the next step easier to find.', 'Keep project context close to its submission and tracking actions.', 'Use clear permission boundaries alongside role-based access.'], challenge: 'Coordinating project workflows with role-based permissions and authenticated API requests is the central engineering challenge described by the project scope.', learning: 'A useful next review would check how clearly each role can identify its permitted actions.',
   uiuxConcepts: [
@@ -50,6 +50,7 @@ export const projects: Project[] = [
    { concept: 'Whitespace as a Design Tool', application: 'Generous margins and line-height transform wall-of-text documentation into a premium, readable experience.' },
    { concept: 'Media Gallery UX', application: 'Interactive gallery with clear thumbnails, lightbox behavior, and contextual captions helps users explore visual evidence.' },
    { concept: 'Cognitive Load Management', application: 'Information is revealed section-by-section rather than all at once, managing the cognitive load of extensive documentation.' },
-  ]
+  ],
+  liveLink: 'https://nswf-portal.vercel.app/'
  }
 ];
