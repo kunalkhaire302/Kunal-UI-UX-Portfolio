@@ -32,10 +32,10 @@ export const videos = [
 ];
 
 export const games = [
-  { title: 'Add favorite game 01', genre: 'Genre placeholder', lesson: 'Health bars show status at a glance — visibility of system status.' },
-  { title: 'Add favorite game 02', genre: 'Genre placeholder', lesson: 'Tutorials reveal complexity in steps — progressive disclosure.' },
-  { title: 'Add favorite game 03', genre: 'Genre placeholder', lesson: 'Consistent controls reduce relearning — consistency and standards.' },
-  { title: 'Add favorite game 04', genre: 'Genre placeholder', lesson: 'Clear rewards make progress tangible — feedback and motivation.' },
+  { title: 'BGMI', genre: 'Battle royale', lesson: 'Health, map, and inventory indicators keep system status visible.' },
+  { title: 'GTA V', genre: 'Open-world action', lesson: 'Contextual prompts reveal controls when they become relevant.' },
+  { title: 'Forza Horizon 5', genre: 'Open-world racing', lesson: 'Consistent controls and navigation reduce relearning at speed.' },
+  { title: 'War Dogs', genre: 'Air combat', lesson: 'Immediate combat feedback makes progress and consequences clear.' },
 ];
 
 export const playerStats = [

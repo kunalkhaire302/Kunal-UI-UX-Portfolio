@@ -302,7 +302,6 @@ function PlayRoom() {
       ['Clear feedback', 'Progress, selected states, and focus styles show what changed.'],
       ['Accessibility', 'Keyboard controls, semantics, contrast, and reduced motion widen access.'],
     ].map(([title, text]) => <article key={title}><strong>{title}</strong><p>{text}</p></article>)}</div>
-    <p className="cr-placeholder-note">PLACEHOLDER TITLES / Replace the game cards with verified favorites in <code>src/data/studio.ts</code>.</p>
   </section>;
 }
 

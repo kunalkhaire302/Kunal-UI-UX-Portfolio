@@ -57,7 +57,6 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 
 - Add the real portrait and update the Player Profile visual.
 - Add verified location/camera/settings metadata for the Capture photographs when available.
-- Replace game placeholders with verified favorite titles and genres.
 - Add accurate caption tracks for the three project videos when transcripts are available.
 - Add the original resume at `public/resume.pdf`, then set `profile.resume` to `/resume.pdf`.
 - Add the verified email address to `profile.email`.
