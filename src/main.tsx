@@ -295,7 +295,7 @@ function CreateStudio() {
 function PlayRoom() {
   return <section className="cr-section cr-play" id="play" aria-labelledby="play-title">
     <div className="cr-section-heading"><span className="cr-index">04</span><div><p className="cr-kicker">PLAY / GAME ROOM</p><h2 id="play-title">Good systems<br />teach by doing.</h2></div><p>Games make feedback, affordance, challenge, and progress visible. These lessons translate directly into understandable product experiences.</p></div>
-    <div className="cr-game-grid">{games.map((game, index) => <article key={game.title}><div className="cr-game-art"><span>0{index + 1}</span><Gamepad2 /><i /></div><div><p className="cr-kicker">{game.genre}</p><h3>{game.title}</h3><p>{game.lesson}</p></div></article>)}</div>
+    <div className="cr-game-grid">{games.map((game, index) => <article key={game.title}><div className="cr-game-art"><img src={game.image} alt={game.imageAlt} loading="lazy" /><span>0{index + 1}</span></div><div><p className="cr-kicker">{game.genre}</p><h3>{game.title}</h3><p>{game.lesson}</p></div></article>)}</div>
     <div className="cr-principles"><div><p className="cr-kicker">SIMPLE CONCEPTS APPLIED</p><h3>What this portfolio practices.</h3></div>{[
       ['Visual hierarchy', 'Display type and numbered rooms guide the reading order.'],
       ['Consistency', 'Repeated panels, labels, and controls reduce relearning.'],

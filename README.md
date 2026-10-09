@@ -49,6 +49,7 @@ The build creates prerendered HTML, route metadata, `sitemap.xml`, and `robots.t
 - `src/data/projects.ts` — verified project descriptions plus clearly labeled proposed interface directions.
 - `src/data/studio.ts` — photography, videos, games, and profile emphasis. Unverified details are explicitly marked as unavailable.
 - `public/photos/` — optimized portfolio photography used by the Capture gallery.
+- `public/games/` — locally hosted game artwork used by the Play Room cards.
 - `public/videos/` — optimized project videos, generated poster frames, and the sample VTT structure for future captions.
 - `src/components/ProjectVisual.tsx` — illustrative UI concepts, not original product screenshots.
 - `DESIGN.md` — visual tokens, type, interaction rules, UI/UX concepts, and content-integrity rules.

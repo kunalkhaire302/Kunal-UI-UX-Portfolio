@@ -32,10 +32,10 @@ export const videos = [
 ];
 
 export const games = [
-  { title: 'BGMI', genre: 'Battle royale', lesson: 'Health, map, and inventory indicators keep system status visible.' },
-  { title: 'GTA V', genre: 'Open-world action', lesson: 'Contextual prompts reveal controls when they become relevant.' },
-  { title: 'Forza Horizon 5', genre: 'Open-world racing', lesson: 'Consistent controls and navigation reduce relearning at speed.' },
-  { title: 'War Dogs', genre: 'Air combat', lesson: 'Immediate combat feedback makes progress and consequences clear.' },
+  { title: 'BGMI', genre: 'Battle royale', image: '/games/bgmi.webp', imageAlt: 'Battlegrounds Mobile India squad key art', lesson: 'Health, map, and inventory indicators keep system status visible.' },
+  { title: 'GTA V', genre: 'Open-world action', image: '/games/gta-v.webp', imageAlt: 'Grand Theft Auto V character artwork', lesson: 'Contextual prompts reveal controls when they become relevant.' },
+  { title: 'Forza Horizon 5', genre: 'Open-world racing', image: '/games/forza-horizon-5.webp', imageAlt: 'Forza Horizon 5 racing key art', lesson: 'Consistent controls and navigation reduce relearning at speed.' },
+  { title: 'War Dogs', genre: 'Air combat', image: '/games/war-dogs.webp', imageAlt: 'War Dogs World War II aerial combat artwork', lesson: 'Immediate combat feedback makes progress and consequences clear.' },
 ];
 
 export const playerStats = [
