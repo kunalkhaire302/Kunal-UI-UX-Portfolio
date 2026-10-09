@@ -1,6 +1,6 @@
 import { BarChart3, Check, ChevronDown, FileSpreadsheet, Layers, Leaf, Plus, Search, MapPin, Cpu, BookOpen } from 'lucide-react';
 export function ProjectVisual({slug}: {slug:string}) {
- const carbon = slug === 'carbon-footprint-ai'; const csv = slug === 'smartcsv'; const craigslist = slug === 'redesign-craigslist-mumbai'; const techfest = slug === 'techfest-landingpage'; const nswf = slug === 'nswf-portal';
+ const carbon = slug === 'carbon-footprint-ai'; const csv = slug === 'smartcsv'; const craigslist = slug === 'redesign-craigslist-mumbai'; const techfest = slug === 'techfest-landingpage'; const nswf = slug === 'nswf-portal'; const capstonex = slug === 'capstonex';
 
  if (craigslist) {
    return (
@@ -22,6 +22,14 @@ export function ProjectVisual({slug}: {slug:string}) {
    return (
      <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
        <img src="/techfest.jpg" alt="Techfest IIT Bombay Landing Page" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+     </div>
+   );
+ }
+
+ if (capstonex) {
+   return (
+     <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
+       <img src="/capstonex.jpg" alt="CapstoneX Platform" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
      </div>
    );
  }
