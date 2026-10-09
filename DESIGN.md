@@ -47,3 +47,17 @@ All fonts are bundled by Vite from local npm packages. No third-party font reque
 ## Content integrity
 
 Project facts come from `src/data/projects.ts`. Photography, game, and video entries in `src/data/studio.ts` are explicitly marked placeholders until verified personal media and titles are supplied.
+
+## Background
+
+The persistent Signal Wave canvas is implemented in `src/components/background/WaveBackground.tsx`. It draws three multi-line ribbons, atmospheric particles, cursor pull, scroll energy, tap ripples, and the Create scanline in one capped animation loop. It pauses when hidden, reduces work on mobile/low-core devices, and renders a static frame when reduced motion is requested.
+
+Scene values live in `src/components/background/scenes.ts`:
+
+- `colors` controls each scene's three ribbons.
+- `amplitude` and `speed` control motion intensity.
+- `yPosition` moves the wave group vertically as a viewport ratio.
+- `particleCount` and `opacity` control atmosphere and readability.
+- `scanline` enables the Create timeline sweep; `converge` draws the Contact ribbons toward the center.
+
+The existing `data-theme` attribute drives a 400ms dark/pastel interpolation. The footer motion control stores its override in `localStorage` under `reduce-background-motion`. Section IDs must match the scene keys: `hero`, `quests`, `play`, `capture`, `create`, and `contact`.

@@ -10,6 +10,7 @@ import { projects, type Project } from './data/projects';
 import { profile } from './data/profile';
 import { games, photos, playerStats, videos } from './data/studio';
 import { ProjectVisual } from './components/ProjectVisual';
+import { MotionToggle, WaveBackground } from './components/background/WaveBackground';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
@@ -169,7 +170,7 @@ function Hero() {
     panel.current.style.setProperty('--px', `${((event.clientX - box.left) / box.width - .5) * 16}px`);
     panel.current.style.setProperty('--py', `${((event.clientY - box.top) / box.height - .5) * 16}px`);
   };
-  return <section className="cr-hero" id="home" onMouseMove={parallax} ref={panel}>
+  return <section className="cr-hero" id="hero" onMouseMove={parallax} ref={panel}>
     <div className="cr-hero-grid" aria-hidden="true" />
     <div className="cr-hero-copy">
       <p className="cr-kicker">UI/UX DESIGNER · FRONTEND DEVELOPER · PLAYER ONE</p>
@@ -383,10 +384,10 @@ export function App({ initialPath = '' }: { initialPath?: string }) {
   const project = slug ? projects.find((item) => item.slug === slug) : undefined;
   const isUnknown = path !== '/' && !project;
   return <div className="cr-app">
-    <a className="skip-link" href="#main">Skip to content</a><BootScreen /><div className="cr-xp" aria-hidden="true"><i /></div><div className="cr-cursor" aria-hidden="true" />
+    <WaveBackground routeKey={path} /><a className="skip-link" href="#main">Skip to content</a><BootScreen /><div className="cr-xp" aria-hidden="true"><i /></div><div className="cr-cursor" aria-hidden="true" />
     <Header navigate={navigate} />
     <AnimatePresence mode="wait" initial={false}><motion.main id="main" key={path} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>{isUnknown ? <NotFound navigate={navigate} /> : project ? <CaseStudy project={project} navigate={navigate} /> : <Home navigate={navigate} />}</motion.main></AnimatePresence>
-    <footer className="cr-footer"><span>KK / CONTROL ROOM</span><p>Designed and built by Kunal Khaire.</p><a href="#home">Back to top ↑</a></footer>
+    <footer className="cr-footer"><span>KK / CONTROL ROOM</span><p>Designed and built by Kunal Khaire.</p><MotionToggle /><a href="#hero">Back to top ↑</a></footer>
   </div>;
 }
 
