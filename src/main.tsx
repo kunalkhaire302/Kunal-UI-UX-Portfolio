@@ -271,11 +271,8 @@ function Capture() {
 }
 
 function VideoClip({ video, index, selected, onSelect }: { video: typeof videos[number]; index: number; selected: boolean; onSelect: () => void }) {
-  const media = useRef<HTMLVideoElement>(null);
-  const playPreview = () => media.current?.play().catch(() => undefined);
-  const pausePreview = () => media.current?.pause();
-  return <article className={selected ? 'is-selected' : ''} tabIndex={0} onClick={onSelect} onFocus={() => { onSelect(); playPreview(); }} onBlur={pausePreview} onPointerEnter={playPreview} onPointerLeave={pausePreview}>
-    {video.src ? <video ref={media} src={video.src} poster={video.poster} muted loop playsInline preload="metadata" controls aria-label={`${video.title} project video`}>{video.captions && <track kind="captions" src={video.captions} srcLang="en" label="English" default />}</video> : <img src={video.poster} alt="Placeholder poster awaiting a project video" loading="lazy" />}
+  return <article className={selected ? 'is-selected' : ''} tabIndex={0} role="button" aria-pressed={selected} onClick={onSelect} onFocus={onSelect} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(); } }}>
+    <img src={video.poster} alt="" loading="lazy" />
     <div><span>CLIP {String(index + 1).padStart(2, '0')} · {video.duration}</span><h3>{video.title}</h3><p>{video.caption}</p></div>
   </article>;
 }
@@ -287,7 +284,7 @@ function CreateStudio() {
   return <section className="cr-section cr-create" id="create" aria-labelledby="create-title">
     <div className="cr-section-heading"><span className="cr-index">03</span><div><p className="cr-kicker">CREATE / VIDEO STUDIO</p><h2 id="create-title">Pacing gives<br />ideas momentum.</h2></div><p>Editing is interaction design over time: sequence information, create anticipation, and give every transition a reason.</p></div>
     <div className="cr-edit-bay">
-      <div className="cr-monitor"><img src={videos[active].poster} alt="Selected video placeholder poster" /><div><span className="cr-kicker">PROGRAM MONITOR</span><b>{videos[active].title}</b><small>{videos[active].caption}</small></div></div>
+      <div className="cr-monitor"><video key={videos[active].src} src={videos[active].src} poster={videos[active].poster} controls autoPlay muted playsInline preload="metadata" aria-label={`${videos[active].title} project video`}>{videos[active].captions && <track kind="captions" src={videos[active].captions} srcLang="en" label="English" default />}</video><div><span className="cr-kicker">PROGRAM MONITOR</span><b>{videos[active].title}</b><small>{videos[active].caption}</small></div></div>
       <div className="cr-clip-grid">{videos.map((video, index) => <VideoClip key={video.title} video={video} index={index} selected={active === index} onSelect={() => select(index)} />)}</div>
       <div className="cr-timeline"><div className="cr-time-head"><span>00:00:00</span><strong>EDIT TIMELINE / DRAG OR USE ARROW KEYS</strong><output>{String(Math.round(playhead)).padStart(2, '0')}%</output></div><div className="cr-track" aria-hidden="true">{videos.map((video, index) => <span key={video.title} className={active === index ? 'is-active' : ''}>C{index + 1}</span>)}<i style={{ left: `${playhead}%` }} /></div><label><span className="sr-only">Timeline playhead position</span><input type="range" min="0" max="100" value={playhead} onChange={(event) => setPlayhead(Number(event.target.value))} /></label></div>
     </div>
