@@ -1,6 +1,15 @@
 import { BarChart3, Check, ChevronDown, FileSpreadsheet, Layers, Leaf, Plus, Search, MapPin, Cpu, BookOpen } from 'lucide-react';
 export function ProjectVisual({slug}: {slug:string}) {
  const carbon = slug === 'carbon-footprint-ai'; const csv = slug === 'smartcsv'; const craigslist = slug === 'redesign-craigslist-mumbai'; const techfest = slug === 'techfest-landingpage'; const nswf = slug === 'nswf-portal';
+
+ if (craigslist) {
+   return (
+     <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
+       <img src="/craig.jpg" alt="Craigslist Mumbai Redesign" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+     </div>
+   );
+ }
+
  return <div className={`project-visual ${slug}`} role="img" aria-label={`${csv ? 'SmartCSV' : carbon ? 'Carbon Footprint AI' : craigslist ? 'Craigslist Mumbai' : techfest ? 'Techfest IIT Bombay' : nswf ? 'NSWF Portal' : 'CapstoneX'} illustrative interface concept; sample content, not an original project screenshot`}>
   <div className="mock-window" aria-hidden="true">
    <div className="mock-top"><span className="mock-brand">{csv ? <FileSpreadsheet size={17}/> : carbon ? <Leaf size={17}/> : craigslist ? <MapPin size={17}/> : techfest ? <Cpu size={17}/> : nswf ? <BookOpen size={17}/> : <Layers size={17}/>} {csv ? 'SmartCSV' : carbon ? 'Carbon Footprint' : craigslist ? 'Craigslist Mumbai' : techfest ? 'Techfest 2026' : nswf ? 'NSWF Wiki Portal' : 'CapstoneX'}</span><span className="mock-avatar">K</span></div>
