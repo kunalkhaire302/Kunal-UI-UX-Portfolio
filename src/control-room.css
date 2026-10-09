@@ -155,11 +155,11 @@
 .cr-gallery button { position: relative; width: 100%; margin: 0 0 14px; padding: 0; display: block; break-inside: avoid; border: 1px solid var(--cr-line); background: var(--cr-panel); overflow: hidden; text-align: left; transition: opacity .25s, transform .25s, border-color .25s; }
 .cr-gallery img { width: 100%; display: block; transition: transform .5s cubic-bezier(.2,.8,.2,1); }
 .cr-gallery button:hover, .cr-gallery button:focus-visible { border-color: var(--cr-warm); transform: translateY(-4px); }.cr-gallery button:hover img, .cr-gallery button:focus-visible img { transform: scale(1.035); }
-.cr-gallery button span { position: absolute; inset: auto 0 0; padding: 48px 16px 14px; display: grid; background: linear-gradient(transparent, rgba(0,0,0,.86)); color: #fff; }.cr-gallery button b { font-size: .78rem; }.cr-gallery button small { margin-top: 4px; color: #d1d9e4; font: .58rem var(--cr-mono); }
+.cr-gallery button span { position: absolute; inset: auto 0 0; padding: 48px 16px 14px; display: grid; background: linear-gradient(transparent, rgba(0,0,0,.86)); color: #fff; }.cr-gallery button b { font-size: .78rem; }
 @supports selector(:has(*)) { .cr-gallery:has(button:hover) button:not(:hover) { opacity: .42; } }
 .cr-placeholder-note { width: min(1320px, 100%); margin: 20px auto 0; color: var(--cr-muted); font: .62rem/1.7 var(--cr-mono); letter-spacing: .05em; }.cr-placeholder-note code { color: var(--cr-cyan); }
 .cr-lightbox { position: fixed; z-index: 150; inset: 0; display: grid; grid-template-columns: 70px minmax(0, 1fr) 70px; align-items: center; padding: 30px; background: rgba(2,7,13,.96); color: #edf6ff; }
-.cr-lightbox figure { max-width: 1120px; max-height: calc(100vh - 70px); margin: auto; display: grid; grid-template-columns: minmax(0, 1fr) 260px; background: #0d1b2d; border: 1px solid #263c55; overflow: auto; }
+.cr-lightbox figure { grid-column: 2; width: 100%; max-width: 1120px; max-height: calc(100vh - 70px); margin: auto; display: grid; grid-template-columns: minmax(0, 1fr) 260px; background: #0d1b2d; border: 1px solid #263c55; overflow: auto; }
 .cr-lightbox figure > img { width: 100%; height: 100%; max-height: calc(100vh - 72px); object-fit: contain; background: #050a11; }
 .cr-lightbox figcaption { padding: 30px; display: flex; flex-direction: column; justify-content: space-between; gap: 30px; }.cr-lightbox figcaption h3 { margin: 10px 0 4px; font: 560 1.7rem var(--cr-display); }.cr-lightbox figcaption p { color: #9aabc0; }
 .cr-lightbox dl { display: grid; gap: 16px; }.cr-lightbox dl div { padding-top: 12px; border-top: 1px solid #263c55; }.cr-lightbox dt { color: #31d7ff; font: .58rem var(--cr-mono); }.cr-lightbox dd { margin: 5px 0 0; font-size: .72rem; color: #9aabc0; }
