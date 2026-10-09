@@ -3,7 +3,8 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowDown, ArrowLeft, ArrowRight, Camera, Download, Film, Gamepad2, Github,
-  Layers3, Linkedin, Menu, Moon, Palette, Power, Sun, X,
+  Layers3, Linkedin, Menu, MonitorPlay, Moon, Palette, PenTool, Play, Power, Search,
+  Sparkles, Sun, TestTube2, X,
 } from 'lucide-react';
 import { projects, type Project } from './data/projects';
 import { profile } from './data/profile';
@@ -202,16 +203,77 @@ function PlayerProfile() {
   </section>;
 }
 
-function Home() {
-  return <><Hero /><PlayerProfile /><section className="cr-section cr-next-up" id="quests"><p className="cr-kicker">NEXT ROOM</p><h2>Quests are loading.</h2><p>The existing projects remain available while their research-to-test presentation is upgraded.</p></section></>;
+const featuredSlugs = ['redesign-craigslist-mumbai', 'techfest-landingpage', 'nswf-portal'];
+
+function ProjectAnchor({ project, navigate, className = '', children }: { project: Project; navigate: Navigate; className?: string; children: React.ReactNode }) {
+  const open = (event: ReactMouseEvent<HTMLAnchorElement>) => { event.preventDefault(); navigate(`/work/${project.slug}`); };
+  return <a className={className} href={`/work/${project.slug}`} onClick={open}>{children}</a>;
 }
 
-function CaseStudyPreview({ project, navigate }: { project: Project; navigate: Navigate }) {
-  return <article className="cr-case-preview">
-    <button className="cr-text-button" onClick={() => navigate('/')}><ArrowLeft size={17} /> Back to control room</button>
-    <span className="cr-kicker">QUEST / {project.category}</span><h1>{project.title}</h1><p>{project.description}</p>
-    <ProjectVisual slug={project.slug} />
-    <div className="cr-case-preview-copy"><div><span>ROLE</span><strong>{project.role}</strong></div><div><span>GOAL</span><strong>{project.goals}</strong></div></div>
+function Quests({ navigate }: { navigate: Navigate }) {
+  const featured = featuredSlugs.map((slug) => projects.find((project) => project.slug === slug)).filter((project): project is Project => Boolean(project));
+  const more = projects.filter((project) => !featuredSlugs.includes(project.slug));
+  return <section className="cr-section cr-quests" id="quests" aria-labelledby="quests-title">
+    <div className="cr-section-heading"><span className="cr-index">01</span><div><p className="cr-kicker">QUESTS / CASE STUDIES</p><h2 id="quests-title">Problems worth<br />solving well.</h2></div><p>Three UI/UX-focused stories show how constraints become clearer structures, interactions, and responsive systems. Existing project facts are preserved.</p></div>
+    <div className="cr-quest-grid">
+      {featured.map((project, index) => <article className="cr-quest-card" key={project.slug}>
+        <ProjectAnchor project={project} navigate={navigate} className="cr-quest-visual"><ProjectVisual slug={project.slug} /></ProjectAnchor>
+        <div className="cr-quest-copy"><span className="cr-kicker">QUEST {String(index + 1).padStart(2, '0')} / {project.category}</span><h3><ProjectAnchor project={project} navigate={navigate}>{project.title}</ProjectAnchor></h3><p>{project.description}</p><div className="cr-quest-meta"><span>{project.role}</span><span>{project.uiuxConcepts.length} concepts</span></div><ProjectAnchor project={project} navigate={navigate} className="cr-quest-link">Open case study <ArrowRight size={17} /></ProjectAnchor></div>
+      </article>)}
+    </div>
+    <div className="cr-side-quests"><div><p className="cr-kicker">SIDE QUESTS</p><h3>More product explorations.</h3></div>{more.map((project) => <ProjectAnchor project={project} navigate={navigate} key={project.slug}><span>{project.category}</span><strong>{project.title}</strong><ArrowRight /></ProjectAnchor>)}</div>
+  </section>;
+}
+
+function Home({ navigate }: { navigate: Navigate }) {
+  return <><Hero /><PlayerProfile /><Quests navigate={navigate} /></>;
+}
+
+function BeforeAfterSlider({ project }: { project: Project }) {
+  const [position, setPosition] = useState(52);
+  return <div className="cr-comparison">
+    <div className="cr-compare-stage">
+      <div className="cr-compare-side is-before"><span>PROBLEM SPACE</span><strong>{project.challenge}</strong></div>
+      <div className="cr-compare-side is-after" style={{ clipPath: `inset(0 0 0 ${position}%)` }}><span>PORTFOLIO DIRECTION</span><strong>{project.approach}</strong></div>
+      <i style={{ left: `${position}%` }} aria-hidden="true"><b>↔</b></i>
+    </div>
+    <label><span>Compare framing and proposed direction</span><output>{position}%</output><input type="range" min="10" max="90" value={position} onChange={(event) => setPosition(Number(event.target.value))} aria-label="Reveal proposed interface direction" /></label>
+  </div>;
+}
+
+const casePhases = [
+  { id: 'research', label: 'Research', icon: Search },
+  { id: 'wireframe', label: 'Wireframe', icon: PenTool },
+  { id: 'prototype', label: 'Prototype', icon: MonitorPlay },
+  { id: 'test', label: 'Test', icon: TestTube2 },
+];
+
+function CaseStudy({ project, navigate }: { project: Project; navigate: Navigate }) {
+  const [activePhase, setActivePhase] = useState('research');
+  useEffect(() => {
+    const sections = casePhases.map((phase) => document.getElementById(`case-${phase.id}`)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && setActivePhase(entry.target.id.replace('case-', ''))), { rootMargin: '-25% 0px -55%' });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [project.slug]);
+  const index = projects.indexOf(project);
+  const next = projects[(index + 1) % projects.length];
+  return <article className="cr-case">
+    <header className="cr-case-hero">
+      <button className="cr-text-button" onClick={() => navigate('/')}><ArrowLeft size={17} /> Back to quests</button>
+      <div className="cr-case-title"><div><span className="cr-kicker">QUEST {String(index + 1).padStart(2, '0')} / {project.category}</span><h1>{project.title}</h1><p>{project.description}</p></div><div className="cr-case-facts"><span><small>ROLE</small>{project.role}</span><span><small>STACK</small>{project.stack.slice(0, 3).join(' · ')}</span><span><small>CASE TYPE</small>Structured portfolio narrative</span></div></div>
+      <ProjectVisual slug={project.slug} />
+    </header>
+    <div className="cr-case-layout">
+      <aside className="cr-case-rail" aria-label="Case study progress"><span className="cr-kicker">MISSION PROGRESS</span>{casePhases.map(({ id, label, icon: Icon }, phaseIndex) => <a key={id} className={activePhase === id ? 'is-active' : ''} href={`#case-${id}`}><i>{String(phaseIndex + 1).padStart(2, '0')}</i><Icon size={17} /><span>{label}</span></a>)}<p>These phases organize the portfolio story. They do not claim undocumented research or testing.</p></aside>
+      <div className="cr-case-story">
+        <section id="case-research" className="cr-case-phase"><div className="cr-phase-title"><span>01</span><div><p className="cr-kicker">RESEARCH / UNDERSTAND</p><h2>Start with the context,<br />not the canvas.</h2></div></div><div className="cr-phase-grid"><div><h3>Context</h3><p>{project.context}</p></div><div><h3>Intended use</h3><p>{project.useCase}</p></div></div><div className="cr-evidence-note"><Search /><div><strong>Evidence boundary</strong><p>The supplied project description did not include interview transcripts, analytics, or a validated persona. This section uses documented scope only.</p></div></div></section>
+        <section id="case-wireframe" className="cr-case-phase"><div className="cr-phase-title"><span>02</span><div><p className="cr-kicker">WIREFRAME / STRUCTURE</p><h2>Give each decision<br />a clear job.</h2></div></div><p className="cr-phase-lede">{project.goals}</p><div className="cr-flow-map">{project.highlights.slice(0, 4).map((highlight, itemIndex) => <div key={highlight}><span>0{itemIndex + 1}</span><strong>{highlight}</strong></div>)}</div><div className="cr-decision-list">{project.decisions.map((decision, itemIndex) => <article key={decision}><span>{String(itemIndex + 1).padStart(2, '0')}</span><p>{decision}</p></article>)}</div></section>
+        <section id="case-prototype" className="cr-case-phase"><div className="cr-phase-title"><span>03</span><div><p className="cr-kicker">PROTOTYPE / MAKE TANGIBLE</p><h2>Turn structure into<br />an experience.</h2></div></div><p className="cr-phase-lede">{project.approach}</p><BeforeAfterSlider project={project} /><div className="cr-prototype-slot"><img src="/videos/poster-01.svg" alt="Placeholder poster for a future project walkthrough" loading="lazy" /><div><Play aria-hidden="true" /><span>PROTOTYPE WALKTHROUGH</span><strong>Add a captioned project video</strong><small>Placeholder — no source video was supplied.</small></div></div></section>
+        <section id="case-test" className="cr-case-phase"><div className="cr-phase-title"><span>04</span><div><p className="cr-kicker">TEST / LEARN</p><h2>Make the next iteration<br />more informed.</h2></div></div><div className="cr-test-grid"><article><span>CHALLENGE</span><p>{project.challenge}</p></article><article><span>LEARNING / NEXT REVIEW</span><p>{project.learning}</p></article></div><div className="cr-concept-panel"><div><Sparkles /><h3>UI/UX concepts applied</h3><p>Focused principles connected to specific interface decisions.</p></div><div>{project.uiuxConcepts.slice(0, 4).map((concept) => <article key={concept.concept}><strong>{concept.concept}</strong><p>{concept.application}</p></article>)}</div></div></section>
+      </div>
+    </div>
+    <ProjectAnchor project={next} navigate={navigate} className="cr-next-quest"><span className="cr-kicker">NEXT QUEST</span><strong>{next.title}</strong><ArrowRight /></ProjectAnchor>
   </article>;
 }
 
@@ -239,7 +301,7 @@ export function App({ initialPath = '' }: { initialPath?: string }) {
   return <div className="cr-app">
     <a className="skip-link" href="#main">Skip to content</a><BootScreen /><div className="cr-xp" aria-hidden="true"><i /></div><div className="cr-cursor" aria-hidden="true" />
     <Header navigate={navigate} />
-    <AnimatePresence mode="wait"><motion.main id="main" key={path} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>{isUnknown ? <NotFound navigate={navigate} /> : project ? <CaseStudyPreview project={project} navigate={navigate} /> : <Home />}</motion.main></AnimatePresence>
+    <AnimatePresence mode="wait"><motion.main id="main" key={path} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>{isUnknown ? <NotFound navigate={navigate} /> : project ? <CaseStudy project={project} navigate={navigate} /> : <Home navigate={navigate} />}</motion.main></AnimatePresence>
     <footer className="cr-footer"><span>KK / CONTROL ROOM</span><p>Designed and built by Kunal Khaire.</p><a href="#home">Back to top ↑</a></footer>
   </div>;
 }
