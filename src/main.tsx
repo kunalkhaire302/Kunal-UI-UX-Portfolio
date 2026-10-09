@@ -195,7 +195,7 @@ function PlayerProfile() {
     <div className="cr-section-heading"><span className="cr-index">00</span><div><p className="cr-kicker">PLAYER PROFILE</p><h2 id="profile-title">The person behind<br />the interface.</h2></div><p>A product-minded designer and developer who notices the same things in a flow, a frame, and a game: what gets attention, what creates confidence, and what makes people continue.</p></div>
     <div className="cr-profile-grid">
       <article className="cr-id-card">
-        <div className="cr-portrait" role="img" aria-label="Portrait placeholder for Kunal Khaire"><span>ADD<br />PORTRAIT</span><i /></div>
+        <div className="cr-portrait"><img src="/kunal-khaire-portrait.png" alt="Kunal Khaire wearing a navy suit" /><i /></div>
         <div><p className="cr-kicker">PLAYER 01</p><h3>Kunal Khaire</h3><p>UI/UX Designer + Developer</p><span className="cr-status-pill"><i /> Open to opportunities</span></div>
       </article>
       <div className="cr-stat-panel">

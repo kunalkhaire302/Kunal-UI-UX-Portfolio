@@ -120,10 +120,9 @@
 .cr-id-card, .cr-stat-panel, .cr-achievements { border: 1px solid color-mix(in srgb, var(--cr-line) 78%, transparent); background: color-mix(in srgb, var(--cr-panel) 88%, transparent); backdrop-filter: blur(14px); }
 .cr-id-card { grid-row: span 2; padding: 18px; }
 .cr-portrait { position: relative; aspect-ratio: 4 / 4.5; display: grid; place-items: center; background: linear-gradient(145deg, color-mix(in srgb, var(--cr-violet) 30%, var(--cr-panel)), var(--cr-bg)); overflow: hidden; }
-.cr-portrait::before, .cr-portrait::after { content: ''; position: absolute; width: 72%; aspect-ratio: 1; border: 1px solid color-mix(in srgb, var(--cr-cyan) 55%, transparent); border-radius: 50%; }
-.cr-portrait::after { width: 44%; transform: translate(35%, 65%); background: color-mix(in srgb, var(--cr-violet) 42%, transparent); }
-.cr-portrait span { z-index: 2; font: .66rem/1.5 var(--cr-mono); letter-spacing: .12em; text-align: center; color: var(--cr-cyan); }
-.cr-portrait i { position: absolute; inset: 14px; border: 1px solid rgba(255,255,255,.15); }
+.cr-portrait img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 18%; }
+.cr-portrait::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 62%, rgba(7,17,31,.28)); pointer-events: none; }
+.cr-portrait i { position: absolute; z-index: 1; inset: 14px; border: 1px solid rgba(255,255,255,.24); pointer-events: none; }
 .cr-id-card > div:last-child { padding: 26px 10px 12px; }
 .cr-id-card h3 { margin: 8px 0 4px; font: 600 2rem var(--cr-display); }
 .cr-id-card p:not(.cr-kicker) { color: var(--cr-muted); }
