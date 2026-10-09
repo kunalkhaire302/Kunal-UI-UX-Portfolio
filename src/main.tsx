@@ -338,7 +338,7 @@ function Home({ navigate }: { navigate: Navigate }) {
 
 function BeforeAfterSlider({ project }: { project: Project }) {
   const [position, setPosition] = useState(52);
-  const sideStyle = { padding: '2rem', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column' as const, gap: '0.75rem', overflow: 'hidden' };
+  const sideStyle = { padding: '2rem 1.5rem', fontSize: '1rem', lineHeight: 1.6, display: 'flex', flexDirection: 'column' as const, gap: '0.75rem', overflow: 'hidden', alignContent: 'center' as const };
   return <div className="cr-comparison">
     <div className="cr-compare-stage">
       <div className="cr-compare-side is-before" style={sideStyle}><span>PROBLEM SPACE</span><strong style={{ fontSize: '1rem', fontWeight: 400 }}>{project.challenge}</strong></div>
