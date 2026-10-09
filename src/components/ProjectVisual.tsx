@@ -26,6 +26,14 @@ export function ProjectVisual({slug}: {slug:string}) {
    );
  }
 
+ if (carbon) {
+   return (
+     <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
+       <img src="/carbon.jpg" alt="Carbon Footprint AI" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+     </div>
+   );
+ }
+
  if (capstonex) {
    return (
      <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
