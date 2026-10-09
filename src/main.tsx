@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent 
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
-  ArrowDown, ArrowLeft, ArrowRight, Camera, Download, Film, Gamepad2, Github,
+  ArrowDown, ArrowLeft, ArrowRight, Camera, ChevronLeft, ChevronRight, Download, Film, Gamepad2, Github,
   Layers3, Linkedin, Menu, MonitorPlay, Moon, Palette, PenTool, Play, Power, Search,
   Sparkles, Sun, TestTube2, X,
 } from 'lucide-react';
 import { projects, type Project } from './data/projects';
 import { profile } from './data/profile';
-import { playerStats } from './data/studio';
+import { games, photos, playerStats, videos } from './data/studio';
 import { ProjectVisual } from './components/ProjectVisual';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/space-grotesk';
@@ -225,8 +225,81 @@ function Quests({ navigate }: { navigate: Navigate }) {
   </section>;
 }
 
+function Capture() {
+  const [active, setActive] = useState<number | null>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (active === null) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActive(null);
+      if (event.key === 'ArrowRight') setActive((current) => current === null ? null : (current + 1) % photos.length);
+      if (event.key === 'ArrowLeft') setActive((current) => current === null ? null : (current - 1 + photos.length) % photos.length);
+    };
+    document.body.style.overflow = 'hidden';
+    addEventListener('keydown', keydown);
+    requestAnimationFrame(() => closeButton.current?.focus());
+    return () => { document.body.style.overflow = ''; removeEventListener('keydown', keydown); previous?.focus(); };
+  }, [active]);
+  const selected = active === null ? null : photos[active];
+  return <section className="cr-section cr-capture" id="capture" aria-labelledby="capture-title">
+    <div className="cr-section-heading"><span className="cr-index">02</span><div><p className="cr-kicker">CAPTURE / PHOTOGRAPHY</p><h2 id="capture-title">Train the eye<br />to find focus.</h2></div><p>Photography turns hierarchy into instinct: choose the subject, remove distraction, and let light direct attention. Replace these labeled studies with Kunal's work.</p></div>
+    <div className="cr-gallery">{photos.map((photo, index) => <button key={photo.src} type="button" onClick={() => setActive(index)} aria-label={`Open ${photo.title} in lightbox`}><img src={photo.src} alt={photo.alt} loading="lazy" /><span><b>{photo.title}</b><small>{photo.location}</small></span></button>)}</div>
+    <p className="cr-placeholder-note">PLACEHOLDER MEDIA / Add verified photographs and EXIF details in <code>src/data/studio.ts</code>.</p>
+    <AnimatePresence>{selected && <motion.div className="cr-lightbox" role="dialog" aria-modal="true" aria-label={`${selected.title} image viewer`} onMouseDown={(event) => event.currentTarget === event.target && setActive(null)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <button ref={closeButton} className="cr-lightbox-close" type="button" onClick={() => setActive(null)} aria-label="Close image viewer"><X /></button>
+      <button className="cr-lightbox-nav is-left" type="button" onClick={() => setActive((active! - 1 + photos.length) % photos.length)} aria-label="Previous photograph"><ChevronLeft /></button>
+      <figure><img src={selected.src} alt={selected.alt} /><figcaption><div><span className="cr-kicker">CAPTURE {String(active! + 1).padStart(2, '0')}</span><h3>{selected.title}</h3><p>{selected.location}</p></div><dl><div><dt>CAMERA</dt><dd>{selected.camera}</dd></div><div><dt>SETTINGS</dt><dd>{selected.settings}</dd></div></dl></figcaption></figure>
+      <button className="cr-lightbox-nav is-right" type="button" onClick={() => setActive((active! + 1) % photos.length)} aria-label="Next photograph"><ChevronRight /></button>
+    </motion.div>}</AnimatePresence>
+  </section>;
+}
+
+function VideoClip({ video, index, selected, onSelect }: { video: typeof videos[number]; index: number; selected: boolean; onSelect: () => void }) {
+  const media = useRef<HTMLVideoElement>(null);
+  const playPreview = () => media.current?.play().catch(() => undefined);
+  const pausePreview = () => media.current?.pause();
+  return <article className={selected ? 'is-selected' : ''} tabIndex={0} onClick={onSelect} onFocus={() => { onSelect(); playPreview(); }} onBlur={pausePreview} onPointerEnter={playPreview} onPointerLeave={pausePreview}>
+    {video.src ? <video ref={media} src={video.src} poster={video.poster} muted loop playsInline preload="none" controls><track kind="captions" src="/videos/placeholder.vtt" srcLang="en" label="English" default /></video> : <img src={video.poster} alt="Placeholder poster awaiting a project video" loading="lazy" />}
+    <div><span>CLIP {String(index + 1).padStart(2, '0')} · {video.duration}</span><h3>{video.title}</h3><p>{video.caption}</p></div>
+  </article>;
+}
+
+function CreateStudio() {
+  const [playhead, setPlayhead] = useState(0);
+  const active = Math.min(videos.length - 1, Math.floor(playhead / (100 / videos.length)));
+  const select = (index: number) => setPlayhead(index * (100 / videos.length) + 8);
+  return <section className="cr-section cr-create" id="create" aria-labelledby="create-title">
+    <div className="cr-section-heading"><span className="cr-index">03</span><div><p className="cr-kicker">CREATE / VIDEO STUDIO</p><h2 id="create-title">Pacing gives<br />ideas momentum.</h2></div><p>Editing is interaction design over time: sequence information, create anticipation, and give every transition a reason.</p></div>
+    <div className="cr-edit-bay">
+      <div className="cr-monitor"><img src={videos[active].poster} alt="Selected video placeholder poster" /><div><span className="cr-kicker">PROGRAM MONITOR</span><b>{videos[active].title}</b><small>{videos[active].caption}</small></div></div>
+      <div className="cr-clip-grid">{videos.map((video, index) => <VideoClip key={video.title} video={video} index={index} selected={active === index} onSelect={() => select(index)} />)}</div>
+      <div className="cr-timeline"><div className="cr-time-head"><span>00:00:00</span><strong>EDIT TIMELINE / DRAG OR USE ARROW KEYS</strong><output>{String(Math.round(playhead)).padStart(2, '0')}%</output></div><div className="cr-track" aria-hidden="true">{videos.map((video, index) => <span key={video.title} className={active === index ? 'is-active' : ''}>C{index + 1}</span>)}<i style={{ left: `${playhead}%` }} /></div><label><span className="sr-only">Timeline playhead position</span><input type="range" min="0" max="100" value={playhead} onChange={(event) => setPlayhead(Number(event.target.value))} /></label></div>
+    </div>
+    <p className="cr-placeholder-note">VIDEO REQUIREMENT / Supply compressed MP4 or WebM files plus accurate VTT captions before publishing real work.</p>
+  </section>;
+}
+
+function PlayRoom() {
+  return <section className="cr-section cr-play" id="play" aria-labelledby="play-title">
+    <div className="cr-section-heading"><span className="cr-index">04</span><div><p className="cr-kicker">PLAY / GAME ROOM</p><h2 id="play-title">Good systems<br />teach by doing.</h2></div><p>Games make feedback, affordance, challenge, and progress visible. These lessons translate directly into understandable product experiences.</p></div>
+    <div className="cr-game-grid">{games.map((game, index) => <article key={game.title}><div className="cr-game-art"><span>0{index + 1}</span><Gamepad2 /><i /></div><div><p className="cr-kicker">{game.genre}</p><h3>{game.title}</h3><p>{game.lesson}</p></div></article>)}</div>
+    <div className="cr-principles"><div><p className="cr-kicker">SIMPLE CONCEPTS APPLIED</p><h3>What this portfolio practices.</h3></div>{[
+      ['Visual hierarchy', 'Display type and numbered rooms guide the reading order.'],
+      ['Consistency', 'Repeated panels, labels, and controls reduce relearning.'],
+      ['Clear feedback', 'Progress, selected states, and focus styles show what changed.'],
+      ['Accessibility', 'Keyboard controls, semantics, contrast, and reduced motion widen access.'],
+    ].map(([title, text]) => <article key={title}><strong>{title}</strong><p>{text}</p></article>)}</div>
+    <p className="cr-placeholder-note">PLACEHOLDER TITLES / Replace the game cards with verified favorites in <code>src/data/studio.ts</code>.</p>
+  </section>;
+}
+
+function Contact() {
+  return <section className="cr-contact" id="contact" aria-labelledby="contact-title"><div className="cr-controller" aria-hidden="true"><span>L1</span><Gamepad2 /><span>R1</span></div><p className="cr-kicker">PLAYER 2 JOINED</p><h2 id="contact-title">Have a quest<br />worth sharing?</h2><p>I'm open to opportunities, collaborations, and thoughtful product conversations.</p><div className="cr-contact-actions"><a className="cr-button is-primary" data-magnetic href={profile.linkedin} target="_blank" rel="noreferrer"><span>L1</span> Connect on LinkedIn <Linkedin /></a><a className="cr-button is-quiet" href={profile.github} target="_blank" rel="noreferrer"><span>R1</span> View GitHub <Github /></a></div><div className="cr-contact-meta"><span>{profile.email ? <a href={`mailto:${profile.email}`}>{profile.email}</a> : 'Email · add verified address'}</span><span id="resume-status">{profile.resume ? <a href={profile.resume} download>Download resume</a> : 'Resume · file not supplied'}</span></div></section>;
+}
+
 function Home({ navigate }: { navigate: Navigate }) {
-  return <><Hero /><PlayerProfile /><Quests navigate={navigate} /></>;
+  return <><Hero /><PlayerProfile /><Quests navigate={navigate} /><Capture /><CreateStudio /><PlayRoom /><Contact /></>;
 }
 
 function BeforeAfterSlider({ project }: { project: Project }) {
