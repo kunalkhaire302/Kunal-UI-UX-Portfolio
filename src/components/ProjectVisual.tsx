@@ -18,6 +18,14 @@ export function ProjectVisual({slug}: {slug:string}) {
    );
  }
 
+ if (techfest) {
+   return (
+     <div className={`project-visual ${slug}`} style={{ padding: 0, overflow: 'hidden' }}>
+       <img src="/techfest.jpg" alt="Techfest IIT Bombay Landing Page" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+     </div>
+   );
+ }
+
  return <div className={`project-visual ${slug}`} role="img" aria-label={`${csv ? 'SmartCSV' : carbon ? 'Carbon Footprint AI' : craigslist ? 'Craigslist Mumbai' : techfest ? 'Techfest IIT Bombay' : nswf ? 'NSWF Portal' : 'CapstoneX'} illustrative interface concept; sample content, not an original project screenshot`}>
   <div className="mock-window" aria-hidden="true">
    <div className="mock-top"><span className="mock-brand">{csv ? <FileSpreadsheet size={17}/> : carbon ? <Leaf size={17}/> : craigslist ? <MapPin size={17}/> : techfest ? <Cpu size={17}/> : nswf ? <BookOpen size={17}/> : <Layers size={17}/>} {csv ? 'SmartCSV' : carbon ? 'Carbon Footprint' : craigslist ? 'Craigslist Mumbai' : techfest ? 'Techfest 2026' : nswf ? 'NSWF Wiki Portal' : 'CapstoneX'}</span><span className="mock-avatar">K</span></div>
